@@ -2,9 +2,9 @@
 
 WORKDIR=`pwd`
 
-if ! which iconv ; then
-	echo "iconv not found!"
-	echo " yum install -y glibc-common"
+if ! which sed ; then
+	echo "sed not found!"
+	echo " yum install -y sed"
 	exit 1
 fi
 
@@ -23,10 +23,9 @@ if [ $# -eq 1 ];then
 fi
 
 for f in `find $1 -type f`; do
-	if file ${f} | grep text ; then
-		iconv -f gbk -t utf8 ${f} > ${f}.bak
-		/usr/bin/mv ${f}.bak ${f}
-		echo "iconv ${f} to ${f}.bak ok"
+	if file ${f} | grep -i text ; then
+		sed -i "s/\t/        /g" ${f}
+		echo "tackle: ${f} [$?]"
 	fi
 done
 
